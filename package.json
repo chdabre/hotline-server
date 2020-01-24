@@ -1,0 +1,18 @@
+{
+  "name": "hotline",
+  "version": "1.0.0",
+  "type": "module",
+  "main": "src/index.js",
+  "scripts": {
+    "start": "node src/index.js"
+  },
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.17.1",
+    "i18n": "^0.8.4",
+    "lowdb": "^1.0.0",
+    "request": "^2.88.0",
+    "socket.io": "^2.3.0",
+    "telegraf": "^3.34.1"
+  }
+}

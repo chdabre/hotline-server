@@ -1,0 +1,9 @@
+{
+	"startMessage": "Wilkommen zu THE _LINE. Senden Sie eine Sprachnachricht.",
+	"askRecipient": "Wem möchten Sie diese Nachricht senden?\n\nVerfügbare Leitungen:\n",
+	"recipientAll": "🛰 Alle",
+	"audioTooLong": "⏲ Leider ist diese Nachricht zu lang. Bitte senden Sie eine Nachricht kürzer als {{ maxDuration }} Sekunden.",
+	"messageSent": "📡 Nachricht gesendet an ",
+	"messageSentToAll": "🛰 Nachricht an alle Leitungen gesendet",
+	"error": "🚫 Entschuldigung, etwas ist falsch gelaufen. \n{{ e }}"
+}
