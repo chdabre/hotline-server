@@ -91,6 +91,7 @@ export default class PhoneClient {
         message.reply(`${msg}`)
       }
       this.removeMessage(message)
+      this.sendNewMessages()
     }
   }
 
@@ -110,6 +111,7 @@ export default class PhoneClient {
 
     if (this.socket) {
       this.socket.emit('notify')
+      this.sendNewMessages()
     }
   }
 
@@ -123,6 +125,7 @@ export default class PhoneClient {
         icon: this.icon,
         hasMessages: this.hasMessages()
       })
+      this.sendNewMessages()
     }
   }
 
@@ -134,7 +137,7 @@ export default class PhoneClient {
       const serializeJobs = this.messages.map(message => message.toTransferObject())
       Promise.all(serializeJobs)
         .then(serializedMessages => {
-          this.socket.emit('new_messages', {
+          this.socket.emit('messages', {
             hasMessages: this.hasMessages(),
             messages: serializedMessages
           })
