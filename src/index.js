@@ -26,7 +26,7 @@ class ServerContext {
   }
 
   _configureDB () {
-    const adapter = new FileSync('db.json')
+    const adapter = new FileSync('/config/db.json')
     this.db = lowdb(adapter)
 
     // Set some defaults (required if your JSON file is empty)
