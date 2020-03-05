@@ -32,10 +32,10 @@ class ServerContext {
     // Set some defaults (required if your JSON file is empty)
     this.db.defaults({
       clients: [
-        { id: 'pink', name: 'PINK LINE (Pascal & Philipp)', icon: '🧠', messages: [] },
-        // { id: 'red', name: 'RED LINE (Dario)', icon: '🥫', messages: [] },
-        // { id: 'purple', name: 'PURPLE LINE (Hanna)', icon: '😈', messages: [] },
-        // { id: 'yellow', name: 'YELLOW LINE (Luca)', icon: '🐥', messages: [] },
+        { id: 'pink', name: 'PINK LINE (Pascal & Philipp & Andi)', icon: '🧠', messages: [] },
+        { id: 'red', name: 'RED LINE (Dario)', icon: '🥫', messages: [] },
+        { id: 'purple', name: 'PURPLE LINE (Hanna)', icon: '😈', messages: [] },
+        { id: 'yellow', name: 'YELLOW LINE (Luca)', icon: '🐥', messages: [] },
       ]
     }).write()
   }

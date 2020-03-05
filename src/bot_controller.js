@@ -53,21 +53,30 @@ export default class BotController {
       // Temporarily store message in cache so it can be retrieved in the action callback
       this._messageCache[ctx.message.message_id] = ctx.message
 
-      // Build action query
-      const action = `send:${ctx.message.message_id}:`
+      // Get available clients
+      const availableClients = this._context.clients.filter(c => c.isAvailable())
 
-      // Build message
-      let response = i18n.__('askRecipient')
-      this._context.clients.forEach(user => { response += `${user.icon} ${user.name}\n`})
+      if (availableClients.length > 0) {
+        // Build action query
+        const action = `send:${ctx.message.message_id}:`
 
-      ctx.reply(response, Markup.inlineKeyboard([
-          [ Markup.callbackButton(i18n.__('recipientAll'), action) ], // 'All' Button
-          this._context.clients.map(user => Markup.callbackButton(user.icon, action + user.id)) // User buttons
-        ])
-          .oneTime()
-          .resize()
-          .extra()
-      )
+        // Build message
+        let response = i18n.__('askRecipient')
+        availableClients.forEach(user => { response += `${user.icon} ${user.name}\n`})
+
+        ctx.reply(response, Markup.inlineKeyboard([
+            [ Markup.callbackButton(i18n.__('cancel'), 'send:cancel') ], // 'Cancel' Button
+            [ Markup.callbackButton(i18n.__('recipientAll'), action) ], // 'All' Button
+            availableClients.map(user => Markup.callbackButton(user.icon, action + user.id)), // User buttons,
+          ])
+            .oneTime()
+            .resize()
+            .extra()
+        )
+      } else {
+        // Nobody is available
+        ctx.reply(i18n.__('nobodyAvailable'))
+      }
     } else {
       // Duration limit exceeded
       ctx.reply(i18n.__('audioTooLong', { maxDuration: BotController.MAX_MESSAGE_DURATION }))
@@ -82,6 +91,8 @@ export default class BotController {
     const callbackData = ctx.callbackQuery.data.split(':')
     const messageId = callbackData[1]
     const targetId = callbackData[2]
+
+    if (messageId === 'cancel') return ctx.editMessageText(i18n.__('cancelled')).then(() => next())
 
     const originalMessage = this._messageCache[messageId]
     if (originalMessage) {
@@ -100,7 +111,6 @@ export default class BotController {
         this._context.clients.forEach(user => user.addMessage(Message.copy(newMessage)))
         return ctx.editMessageText(i18n.__('messageSentToAll')).then(() => next())
       }
-
     } else {
       return ctx.editMessageText(i18n.__('error', { error: 'Message not in Cache' })).then(() => next())
     }

@@ -12,8 +12,9 @@ export default class PhoneClient {
    * @param name {String} - Name
    * @param icon {String} - An emoji which is representative of this client
    * @param messages {Array<Message>}
+   * @param lastSeen {Date}
    */
-  constructor (context, id, name, icon, messages = []) {
+  constructor (context, id, name, icon, messages = [], lastSeen = null) {
     this._context = context
 
     this.id = id
@@ -21,6 +22,7 @@ export default class PhoneClient {
     this.icon = icon
 
     this.socket = null
+    this.lastSeen = lastSeen
     this.messages = messages
   }
 
@@ -101,6 +103,7 @@ export default class PhoneClient {
    */
   setSocket (socket) {
     this.socket = socket
+    this.lastSeen = new Date()
   }
 
   /**
@@ -142,6 +145,21 @@ export default class PhoneClient {
             messages: serializedMessages
           })
         })
+        .catch(e => console.error('Failed to send new messages: ', e))
     }
+  }
+
+  /**
+   * Check if the client has been online within the past hour
+   */
+  isAvailable () {
+    const lessThanOneHourAgo = (date) => {
+      const HOUR = 1000 * 60 * 60;
+      const anHourAgo = Date.now() - HOUR;
+
+      return date > anHourAgo;
+    }
+
+    return this.socket !== null || (this.lastSeen !== null && lessThanOneHourAgo(this.lastSeen))
   }
 }

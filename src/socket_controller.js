@@ -46,6 +46,7 @@ export default class SocketController {
       if (user.socket === socket) {
         console.log(`[IO] User ${ user.id } disconnected!`)
         user.socket = null
+        user.lastSeen = new Date()
       }
     })
   }
